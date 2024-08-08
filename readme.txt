@@ -13,6 +13,34 @@ https://us02web.zoom.us/j/87137372096?pwd=bW5aNEZNNnEwZHdzdnlLZHJhUk1aUT09
 
 Meeting ID: 871 3737 2096
 Passcode: 385360
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-specific-pod
+  namespace: your-namespace
+spec:
+  podSelector:
+    matchLabels:
+      app: your-app
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: allowed-app
+    ports:
+    - protocol: TCP
+      port: 80
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: allowed-app
+    ports:
+    - protocol: TCP
+      port: 80
 
 ---
 
